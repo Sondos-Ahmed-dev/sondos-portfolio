@@ -13,14 +13,14 @@ const Navigation: React.FC = () => {
   const [activeSection, setActiveSection] = useState('hero');
 
   const sections = [
-    { id: 'hero', label: 'الرئيسية' },
-    { id: 'about', label: 'عني' },
-    { id: 'education', label: 'التعليم' },
-    { id: 'skills', label: 'المهارات' },
-    { id: 'experience', label: 'الخبرة' },
-    { id: 'projects', label: 'المشاريع' },
-    { id: 'certificates', label: 'الشهادات' },
-    { id: 'contact', label: 'التواصل' },
+    { id: 'hero', label: 'Home' },
+    { id: 'about', label: 'About' },
+    { id: 'education', label: 'Education' },
+    { id: 'skills', label: 'Skills' },
+    { id: 'experience', label: 'Experience' },
+    { id: 'projects', label: 'Projects' },
+    { id: 'certificates', label: 'Certificates' },
+    { id: 'contact', label: 'Contact' },
   ];
 
   const handleScroll = (id: string) => {
@@ -48,6 +48,66 @@ const Navigation: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScrollEvent);
   }, []);
 
+const ConstellationLogo: React.FC<{ size: number; animate: boolean }> = ({ size, animate }) => {
+  const dots = [
+    { cx: 0.27, cy: 0.31 }, { cx: 0.50, cy: 0.23 }, { cx: 0.73, cy: 0.32 },
+    { cx: 0.23, cy: 0.52 }, { cx: 0.50, cy: 0.50 }, { cx: 0.76, cy: 0.54 },
+    { cx: 0.31, cy: 0.68 }, { cx: 0.50, cy: 0.75 }, { cx: 0.71, cy: 0.69 },
+  ];
+  const lines = [
+    [0,1],[1,2],[0,3],[3,4],[4,5],[4,7],[7,8],[6,7],[2,5]
+  ];
+  const radii = [0.042, 0.031, 0.037, 0.031, 0.063, 0.031, 0.031, 0.042, 0.026];
+  const colors = ['#6366f1','#6366f1','#a855f7','#6366f1','#7c3aed','#a855f7','#6366f1','#6366f1','#a855f7'];
+
+  return (
+    <svg width={size} height={size} viewBox="0 0 100 100">
+      <defs>
+        <linearGradient id="cg" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stopColor="#6366f1"/>
+          <stop offset="100%" stopColor="#a855f7"/>
+        </linearGradient>
+      </defs>
+      {lines.map(([a, b], i) => (
+        <motion.line
+          key={i}
+          x1={dots[a].cx * 100} y1={dots[a].cy * 100}
+          x2={dots[b].cx * 100} y2={dots[b].cy * 100}
+          stroke="#6366f1" strokeWidth="0.9"
+          initial={{ opacity: 0 }}
+          animate={animate ? { opacity: 0.3 } : { opacity: 0.3 }}
+          transition={{ delay: 0.5 + i * 0.07, duration: 0.3 }}
+        />
+      ))}
+      {dots.map((d, i) => (
+        <motion.circle
+          key={i}
+          cx={d.cx * 100} cy={d.cy * 100}
+          r={radii[i] * 100}
+          fill={i === 4 ? 'url(#cg)' : colors[i]}
+          initial={{ opacity: 0, scale: 0 }}
+          animate={animate ? { opacity: 1, scale: 1 } : { opacity: 1, scale: 1 }}
+          transition={{ delay: 0.1 + i * 0.09, duration: 0.3, type: 'spring' }}
+        />
+      ))}
+      <motion.text
+        x="50" y="56"
+        textAnchor="middle"
+        fontFamily="Georgia, serif"
+        fontWeight="700"
+        fontSize={size > 60 ? "28" : "13"}
+        fill="url(#cg)"
+        letterSpacing="3"
+        initial={{ opacity: 0 }}
+        animate={animate ? { opacity: 1 } : { opacity: 1 }}
+        transition={{ delay: 1.2, duration: 0.5 }}
+      >
+        SI
+      </motion.text>
+    </svg>
+  );
+};
+  
   return (
     <motion.nav
       initial={{ y: -100 }}
@@ -57,11 +117,14 @@ const Navigation: React.FC = () => {
     >
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
         {/* Logo */}
-        <motion.div
+        {/* <motion.div
           whileHover={{ scale: 1.05 }}
           className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-white font-bold text-lg shadow-md"
         >
           SI
+        </motion.div> */}
+        <motion.div whileHover={{ scale: 1.05 }} className="flex-shrink-0">
+          <ConstellationLogo size={40} animate={true} />
         </motion.div>
 
         {/* Desktop Menu */}
@@ -131,22 +194,31 @@ const HeroSection: React.FC = () => {
           transition={{ duration: 0.5, delay: 0.1 }}
           className="mb-8"
         >
-          <img
+          {/* <img
             src="/manus-storage/logo-si_c3cd3cc6.png"
             alt="SI Logo"
             className="w-24 h-24 mx-auto shadow-lg rounded-full"
-          />
+          /> */}
+          <ConstellationLogo size={96} animate={true} />
         </motion.div>
 
         {/* Main Title */}
-        <motion.h1
+        {/* <motion.h1
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
           className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent"
         >
           Sondos Ibrahim
-        </motion.h1>
+        </motion.h1> */}
+        <motion.h2
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.8, duration: 0.6 }}
+          className="text-lg font-semibold tracking-[0.3em] text-foreground/60"
+        >
+          Sondos Ibrahim
+        </motion.h2>
 
         {/* Subtitle */}
         <motion.p
